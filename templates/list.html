@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <table class="table table-dark">
+          <tr>
+            <thead>
+              <th scope="col">ID</th>
+              <th scope="col">Matrícula</th>
+              <th scope="col">Nombre</th>
+            </thead>
+          </tr>
+          <tbody>
+            {% for register in ctx %}           
+            <tr>
+              <th scope="row">{{ register.0 }}</th>
+              <td>{{ register.1 }} </td>
+              <td>{{ register.2 }} </td>
+              <td>
+                <ul id="menu-btns">
+                  <li> <a href="{% url 'details' register.0 %}" class="btn btn-secondary">Ver Detalles</a></li>
+                </ul>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

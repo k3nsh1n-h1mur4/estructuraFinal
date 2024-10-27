@@ -1,0 +1,19 @@
+:root {
+    background-color: lightcyan;
+}
+
+#menu-btns > li{
+    list-style: none;
+}
+
+#btn-listado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btn-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
