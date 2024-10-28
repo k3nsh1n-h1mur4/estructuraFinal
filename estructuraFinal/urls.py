@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 
 from estructura import views
 
@@ -26,6 +26,7 @@ from estructura import views
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/login', LoginView.as_view(), name='login'),
+    path('accounts/logout', LogoutView.as_view(), name='logout'),
     path('accounts/createUser/', views.createUser, name='createUser'),
     path('estructura/', include('estructura.urls')),
     path('admin/', admin.site.urls),

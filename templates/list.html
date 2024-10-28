@@ -2,6 +2,10 @@
 
 
 {% block content %}
+{% if user.is_authenticated %}
+  <h1>Usuario Autenticado</h1>
+  {{ user.id }}
+{% endif %}
   <div class="container">
     <div class="row">
       <div class="col">
@@ -30,5 +34,9 @@
         </table>
       </div>
     </div>
+  </div>
+
+  <div>
+    <a href="{% url 'logout' %}" class="btn btn-primary">Salir</a>
   </div>
 {% endblock %}

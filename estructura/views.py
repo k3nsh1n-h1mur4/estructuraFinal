@@ -1,9 +1,14 @@
+import os
 import sqlite3
+from PIL import Image
 
 from .connection import Connection
 
+from django.conf import settings
 from django.shortcuts import render, HttpResponse
+from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, BaseUserCreationForm
 
@@ -24,9 +29,23 @@ def login(request):
     title = 'Login'
     error = None
     form = AuthenticationForm
+    request.session['id'] = request.POST['username']
+    print(request.session,get('username'))
     return render(request, 'registration/login.html', {'form': form, 'title': title})   
+
+@login_required
+def logout(request):
+    if request.method == 'POST':
+        logout.flush()
     
     
+
+def upload_handle_img(img, name):
+    with Image.open(img) as img:
+        print(img)
+        img.save(os.path.join(settings.UPLOAD_FILES, name))
+
+@login_required    
 def new_register(request):
     title = 'Nuevo Registro'
     error = None
@@ -63,11 +82,19 @@ def new_register(request):
         status= request.POST['status']
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute('INSERT INTO estructuratbl() VALUES(),',)
+        #cur.execute('INSERT INTO estructuratbl(matricula,nombre,fotot, fotof) VALUES(),',)
+        upload_handle_img(fotot, fotot.name)
+        folder = os.path.join(settings.BASE_DIR, 'images')
+        imgPersonPath = os.path.join(folder, fotot.name)
+        print(imgPersonPath)
         
+        upload_handle_img(fotof, fotof.name)
+        imgSignPath = os.path.join(folder, fotof.name)
+        print(imgSignPath)
+        #upload_handle_img(fotof, fotof.name)
     return render(request, 'new_register.html', {'form': form, 'title': title})    
     
-    
+@login_required    
 def list(request):
     title = 'Listado General'
     error = None
@@ -80,6 +107,7 @@ def list(request):
         cur.close()
     return render(request, 'list.html', {'ctx': ctx, 'title': title, 'error': error})
 
+@login_required
 def details(request, id):
     id = id
     title = 'Detalles del Registro'

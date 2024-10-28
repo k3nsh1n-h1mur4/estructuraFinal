@@ -14,6 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOAD_FILES = os.path.join(BASE_DIR, 'images')
 
 
 # Quick-start development settings - unsuitable for production
@@ -120,12 +121,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = '/Users/k3nsh1n/Dev/estructuraFinal/staticfiles/'
+STATIC_ROOT = 'staticfiles/'
 
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/Users/k3nsh1n/Dev/estructuraFinal/static/',
+    '/Users/k3nsh1n/Dev/estructuraFinal/static',
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
