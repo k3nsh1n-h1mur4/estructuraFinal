@@ -9,4 +9,5 @@ urlpatterns = [
     path('new_register', views.new_register, name='new_register'),
     path('list/', views.list, name='list'),
     path('details/<int:id>', views.details, name='details'),
+    path('delete/<int:id>', views.delete, name='delete'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

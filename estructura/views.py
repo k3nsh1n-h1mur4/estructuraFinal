@@ -7,7 +7,7 @@ from .connection import Connection
 from django.core.paginator import Paginator
 
 from django.conf import settings
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import logout
@@ -148,4 +148,15 @@ def details(request, id):
     cnx.commit()
     cur.close()
     return render(request, 'details.html', {'title': title, 'error': error, 'ctx': ctx})
+
+
+@login_required
+def delete(request,id):
+    id = id
+    cnx = Connection.getConnection()
+    cur = cnx.cursor()
+    cur.execute("DELETE FROM estructuratbl WHERE id = {0}".format(id))
+    cnx.commit()
+    cur.close()
+    return redirect('list')
     
