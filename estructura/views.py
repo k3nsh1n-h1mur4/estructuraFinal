@@ -46,6 +46,19 @@ def upload_handle_img(img, name):
     with Image.open(img) as img:
         print(img)
         img.save(os.path.join(settings.UPLOAD_FILES, name))
+        
+        
+def getLastId():
+    cnx = Connection.getConnection()
+    cur = cnx.cursor()
+    cur.execute("SELECT id FROM estructuratbl order by id desc limit 1;")
+    rowid = cur.fetchone()
+    cnx.commit()
+    print(rowid)
+    if not rowid[0]:
+        return
+    else: return rowid[0] + 1
+    
 
 @login_required    
 def new_register(request):
@@ -82,15 +95,24 @@ def new_register(request):
         engrupo= request.POST['engrupo']
         asisreunion= request.POST['asisreunion']
         status= request.POST['status']
-        cnx = Connection.getConnection()
-        cur = cnx.cursor()
-        #cur.execute('INSERT INTO estructuratbl(matricula,nombre,fotot, fotof) VALUES(),',)
         upload_handle_img(fotot, fotot.name)
         folder = os.path.join(settings.BASE_DIR, 'images')
         imgPersonPath = os.path.join(folder, fotot.name)
         
         upload_handle_img(fotof, fotof.name)
         imgSignPath = os.path.join(folder, fotof.name)
+        data = [
+            (getLastId(),matricula,nombre,imgPersonPath,imgSignPath,fechan,categoria,centtrabact,adscant,turno,domicilio,colonia,municipio,seccional,numcel,correo,resp100,resp10,parttrab,infadic,
+             descansos,vacprog,servicio,promocion,movilizacion,respasig,engrupo,asisreunion,status,request.user.id),
+        ]
+        cnx = Connection.getConnection()
+        cur = cnx.cursor()
+        
+        cur.executemany("INSERT INTO estructuratbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", data)
+        cnx.commit()
+        cur.close()
+        
+        
     return render(request, 'new_register.html', {'form': form, 'title': title})    
     
 @login_required    
@@ -100,7 +122,7 @@ def list(request):
     if request.method == 'GET':
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT * FROM estructuratbl")
+        cur.execute("SELECT * FROM estructuratbl WHERE user_id = {0}".format(request.user.id) )
         ctx = cur.fetchall()
         cnx.commit()
         total = len(ctx)
@@ -108,7 +130,9 @@ def list(request):
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         cur.close()
-    return render(request, 'list.html', {'title': title, 'error': error, 'page_obj' : page_obj})
+        print(total)
+        print(request.user.username)
+    return render(request, 'list.html', {'title': title, 'error': error, 'page_obj' : page_obj, 'total': total})
 
 @login_required
 def details(request, id):
