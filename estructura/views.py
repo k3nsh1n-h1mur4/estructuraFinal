@@ -4,6 +4,8 @@ from PIL import Image
 
 from .connection import Connection
 
+from django.core.paginator import Paginator
+
 from django.conf import settings
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -86,26 +88,27 @@ def new_register(request):
         upload_handle_img(fotot, fotot.name)
         folder = os.path.join(settings.BASE_DIR, 'images')
         imgPersonPath = os.path.join(folder, fotot.name)
-        print(imgPersonPath)
         
         upload_handle_img(fotof, fotof.name)
         imgSignPath = os.path.join(folder, fotof.name)
-        print(imgSignPath)
-        #upload_handle_img(fotof, fotof.name)
     return render(request, 'new_register.html', {'form': form, 'title': title})    
     
 @login_required    
 def list(request):
     title = 'Listado General'
     error = None
-    with sqlite3.connect('db.sqlite3') as cnx:
-        sqlite3.cursor = sqlite3.Row
+    if request.method == 'GET':
+        cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute('SELECT * FROM estructuratbl;')
+        cur.execute("SELECT * FROM estructuratbl")
         ctx = cur.fetchall()
         cnx.commit()
+        total = len(ctx)
+        paginator = Paginator(ctx, 15)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
         cur.close()
-    return render(request, 'list.html', {'ctx': ctx, 'title': title, 'error': error})
+    return render(request, 'list.html', {'title': title, 'error': error, 'page_obj' : page_obj})
 
 @login_required
 def details(request, id):
