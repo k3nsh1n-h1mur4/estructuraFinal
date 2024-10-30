@@ -42,13 +42,11 @@ def login(request):
     return render(request, 'registration/login.html', {'form': form, 'title': title})   
 
 @login_required
-def logout(request):
-    print(request)
-    if request.method == 'POST':
-        request.session.flush()
-        request.user = ""
-        return redirect('login')
-    return HttpResponse(request.session)
+def user_logout(request):
+    logout(request)
+    return render(request, 'registration/logged_out.html', {})
+    
+    
     #if request.method == 'POST':
     #    logout.flush()
     
