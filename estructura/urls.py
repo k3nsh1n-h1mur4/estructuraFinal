@@ -10,4 +10,6 @@ urlpatterns = [
     path('list/', views.list, name='list'),
     path('details/<int:id>', views.details, name='details'),
     path('delete/<int:id>', views.delete, name='delete'),
+    path('logout/', views.logout, name='logout'),
+    path('export_excel/', views.export_excel, name='export_excel'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

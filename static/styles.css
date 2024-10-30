@@ -2,18 +2,31 @@
     background-color: lightcyan;
 }
 
-#menu-btns > li{
-    list-style: none;
+#menu-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 10px;
 }
+
 
 #btn-listado {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 #btn-register {
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+#btnsout {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
 }

@@ -1,11 +1,16 @@
 import os
+import glob
 import sqlite3
 from PIL import Image
+import pandas as pd
+from openpyxl import Workbook
 
 from .connection import Connection
 
-from django.core.paginator import Paginator
+from estructuraFinal.settings import BASE_DIR
 
+from django.core.paginator import Paginator
+from django.http import FileResponse
 from django.conf import settings
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
@@ -32,13 +37,20 @@ def login(request):
     error = None
     form = AuthenticationForm
     request.session['id'] = request.POST['username']
-    print(request.session,get('username'))
+    print(request.session)
+    print(request.session.get('username'))
     return render(request, 'registration/login.html', {'form': form, 'title': title})   
 
 @login_required
 def logout(request):
+    print(request)
     if request.method == 'POST':
-        logout.flush()
+        request.session.flush()
+        request.user = ""
+        return redirect('login')
+    return HttpResponse(request.session)
+    #if request.method == 'POST':
+    #    logout.flush()
     
     
 
@@ -130,8 +142,7 @@ def list(request):
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         cur.close()
-        print(total)
-        print(request.user.username)
+        cnx.close()
     return render(request, 'list.html', {'title': title, 'error': error, 'page_obj' : page_obj, 'total': total})
 
 @login_required
@@ -159,4 +170,35 @@ def delete(request,id):
     cnx.commit()
     cur.close()
     return redirect('list')
+
+def ExportE(result, user):
+    wb = Workbook()
+    ws = wb.active
+    for i in result:
+        ws.append(i)
+    wb.save('Datos' + user + '.xlsx')
+    
+
+
+@login_required
+def export_excel(request):
+    title = 'Exportar a Excel'
+    error = None
+    if request.method == 'GET':
+        cnx = Connection.getConnection()
+        cur = cnx.cursor()
+        cur.execute("SELECT * FROM estructuratbl WHERE user_id = {0}".format(request.user.id))
+        ctx = cur.fetchall()
+        cnx.commit()
+        cur.close()
+        ExportE(ctx, request.user.username)
+        if ctx == None:
+            return
+        else:
+            createdFile = glob.iglob(os.path.join(BASE_DIR, '*.xlsx'), recursive=True)
+            last_file = max(createdFile, key=os.path.getctime)
+            response = FileResponse(open(last_file, 'rb'), as_attachment=True)
+            return response
+        
+    
     
