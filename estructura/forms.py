@@ -751,3 +751,8 @@ class EstructuraRegistrationForm(forms.Form):
     engrupo = forms.CharField(label='En Grupo', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
     asisreunion = forms.CharField(label='Asistencia a Reunión', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
     status = forms.CharField(label='Status', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
+
+
+
+class ValidateMatriculaForm(forms.Form):
+    matricula = forms.CharField(label='Matrícula', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)

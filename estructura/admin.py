@@ -3,6 +3,6 @@ from django.contrib import admin
 from .models import EstructuraModel
 
 class EstructuraAdmin(admin.ModelAdmin):
-    pass
+    exclude = ['id, user_id_id']
     
 admin.site.register(EstructuraModel, EstructuraAdmin)

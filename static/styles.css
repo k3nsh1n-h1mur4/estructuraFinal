@@ -30,3 +30,9 @@
     justify-content: space-around;
     align-items: center;
 }
+
+#error {
+    background-color: red;
+    color: white;
+    font-size: 15px;
+}

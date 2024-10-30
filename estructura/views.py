@@ -19,7 +19,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, BaseUserCreationForm
 
-from .forms import UserRegistrationForm, EstructuraRegistrationForm
+from .forms import UserRegistrationForm, EstructuraRegistrationForm, ValidateMatriculaForm
 from .models import EstructuraModel
 
 def index(request):
@@ -68,6 +68,32 @@ def getLastId():
     if not rowid[0]:
         return
     else: return rowid[0] + 1
+
+
+@login_required
+def ValidateMatricula(request):
+    title = 'Validar Matricula'
+    error = ''
+    ctx = None
+    #form = ValidateMatriculaForm()
+    if request.method == 'POST':
+        form = ValidateMatriculaForm(request.POST)
+        matricula = request.POST['matricula']
+        cnx = Connection.getConnection()
+        cur = cnx.cursor()
+        cur.execute("SELECT matricula FROM estructuratbl WHERE matricula={0}".format(matricula))
+        ctx = cur.fetchone()
+        cnx.commit()
+        cur.close()
+        if ctx:
+            error = 'Matricula ya registrada'
+        else:
+            return redirect('new_register')
+    else:
+        form = ValidateMatriculaForm()
+
+        return render(request, 'index.html', {'title' : title, 'error' : error, 'ctx' : ctx, 'form' : form})
+    return render(request, 'index.html', {'title' : title, 'error' : error, 'ctx' : ctx, 'form' : form})
     
 
 @login_required    

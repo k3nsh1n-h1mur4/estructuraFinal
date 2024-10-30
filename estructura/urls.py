@@ -12,4 +12,5 @@ urlpatterns = [
     path('delete/<int:id>', views.delete, name='delete'),
     path('user_logout/', views.user_logout, name='user_logout'),
     path('export_excel/', views.export_excel, name='export_excel'),
+    path('validate_matricula/', views.ValidateMatricula, name='validate_matricula'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
