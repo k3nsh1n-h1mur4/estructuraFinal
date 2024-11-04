@@ -1,6 +1,7 @@
 import os
 import glob
 import sqlite3
+import pathlib
 from PIL import Image
 import pandas as pd
 from openpyxl import Workbook
@@ -10,7 +11,7 @@ from .connection import Connection
 from estructuraFinal.settings import BASE_DIR
 
 from django.core.paginator import Paginator
-from django.http import FileResponse
+from django.http import FileResponse, JsonResponse
 from django.conf import settings
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.decorators import login_required
@@ -19,7 +20,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, BaseUserCreationForm
 
-from .forms import UserRegistrationForm, EstructuraRegistrationForm, ValidateMatriculaForm
+from .forms import UserRegistrationForm, EstructuraRegistrationForm, ValidateMatriculaForm, ValidateTelefonoForm
 from .models import EstructuraModel
 
 def index(request):
@@ -88,14 +89,39 @@ def ValidateMatricula(request):
         if ctx:
             error = 'Matricula ya registrada'
         else:
-            return redirect('new_register')
+            return redirect('validate_telefono')
     else:
         form = ValidateMatriculaForm()
 
         return render(request, 'index.html', {'title' : title, 'error' : error, 'ctx' : ctx, 'form' : form})
     return render(request, 'index.html', {'title' : title, 'error' : error, 'ctx' : ctx, 'form' : form})
     
+@login_required
+def ValidateTelefono(request):
+    title = 'Validar Teléfono'
+    error = ''
+    ctx = None
+    #form = ValidateMatriculaForm()
+    if request.method == 'POST':
+        form = ValidateTelefonoForm(request.POST)
+        numcel = request.POST['numcel']
+        cnx = Connection.getConnection()
+        cur = cnx.cursor()
+        cur.execute("SELECT numcel FROM estructuratbl WHERE numcel={0}".format(numcel))
+        ctx = cur.fetchone()
+        cnx.commit()
+        cur.close()
+        if ctx:
+            error = 'Teléfono ya registrado'
+            return redirect('validate_matricula')
+        else:
+            return redirect('new_register')
+    else:
+        form = ValidateTelefonoForm()
 
+        return render(request, 'validaTel.html', {'title' : title, 'error' : error, 'ctx' : ctx, 'form' : form})
+    return render(request, 'validaTel.html', {'title' : title, 'error' : error, 'ctx' : ctx, 'form' : form})
+ 
 @login_required    
 def new_register(request):
     title = 'Nuevo Registro'
@@ -128,9 +154,9 @@ def new_register(request):
         promocion= request.POST['promocion']
         movilizacion= request.POST['movilizacion']
         respasig= request.POST['respasig']
-        engrupo= request.POST['engrupo']
-        asisreunion= request.POST['asisreunion']
-        status= request.POST['status']
+        engrupo = request.POST['engrupo']
+        asisreunion = request.POST['asisreunion']
+        status = request.POST['status']
         upload_handle_img(fotot, fotot.name)
         folder = os.path.join(settings.BASE_DIR, 'images')
         imgPersonPath = os.path.join(folder, fotot.name)
@@ -138,8 +164,7 @@ def new_register(request):
         upload_handle_img(fotof, fotof.name)
         imgSignPath = os.path.join(folder, fotof.name)
         data = [
-            (getLastId(),matricula,nombre,imgPersonPath,imgSignPath,fechan,categoria,centtrabact,adscant,turno,domicilio,colonia,municipio,seccional,numcel,correo,resp100,resp10,parttrab,infadic,
-             descansos,vacprog,servicio,promocion,movilizacion,respasig,engrupo,asisreunion,status,request.user.id),
+            (getLastId(),matricula,nombre.upper(),imgPersonPath,imgSignPath,fechan,categoria,centtrabact,adscant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,numcel,correo,resp100.upper(),resp10.upper(),parttrab.upper(),infadic.upper(),descansos.upper(),vacprog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),respasig.upper(),engrupo.upper(),asisreunion.upper(),status.upper(),request.user.id),
         ]
         cnx = Connection.getConnection()
         cur = cnx.cursor()
@@ -147,6 +172,7 @@ def new_register(request):
         cur.executemany("INSERT INTO estructuratbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", data)
         cnx.commit()
         cur.close()
+        return JsonResponse({"data" : "Registro Realizado"})
         
         
     return render(request, 'new_register.html', {'form': form, 'title': title})    
@@ -169,8 +195,12 @@ def list(request):
         cnx.close()
     return render(request, 'list.html', {'title': title, 'error': error, 'page_obj' : page_obj, 'total': total})
 
+
+
 @login_required
 def details(request, id):
+    if not request.user.is_authenticated:
+        return redirect(f"{settings.LOGIN_URL}?next{request.path}")
     id = id
     title = 'Detalles del Registro'
     error = None
@@ -182,7 +212,13 @@ def details(request, id):
         error = 'No hay Registros por Mostrar'
     cnx.commit()
     cur.close()
-    return render(request, 'details.html', {'title': title, 'error': error, 'ctx': ctx})
+    #print(type(ctx[3]))
+    #p = pathlib.PureWindowsPath(ctx[3])
+    #rep = ctx[3].replace('\\', '/')
+    #print(rep)
+    #with Image.open(rep) as picture:
+    #    picture.show()
+    return render(request, 'details.html', {'title': title, 'error': error, 'ctx': ctx, 'rep' : ctx[3]})
 
 
 @login_required
@@ -224,5 +260,13 @@ def export_excel(request):
             response = FileResponse(open(last_file, 'rb'), as_attachment=True)
             return response
         
+
+@login_required
+def viewImage(request, slug):
+    slug = slug
+    return HttpResponse(slug)
     
-    
+
+"""
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+"""

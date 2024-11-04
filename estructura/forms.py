@@ -723,7 +723,7 @@ class EstructuraRegistrationForm(forms.Form):
         ('LABORATIO CITOLOGÍA', 'LABORATORIO CITOLOGÍA'),
     ]
     
-    matricula = forms.CharField(label='Matrícula', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
+    matricula = forms.CharField(label='Matrícula', widget=forms.TextInput(attrs={'class' : 'form-control', 'autofocus' : 'True'}), required = False)
     nombre = forms.CharField(label='Nombre Completo', widget=forms.TextInput(attrs={'class': 'form-control'}), required = False)
     fotot = forms.FileField(label='Foto Trabajador', required = False)
     fotof = forms.FileField(label='Foto Firma', required = False)
@@ -748,11 +748,15 @@ class EstructuraRegistrationForm(forms.Form):
     promocion = forms.CharField(label='Promoción', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
     movilizacion = forms.CharField(label='Movilización', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
     respasig = forms.CharField(label='Responsable Asignado', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
-    engrupo = forms.CharField(label='En Grupo', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
-    asisreunion = forms.CharField(label='Asistencia a Reunión', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
-    status = forms.CharField(label='Status', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
+    engrupo = forms.CharField(label='En Grupo', widget=forms.TextInput(attrs={'class' : 'form-control', 'value': 'SD', 'readonly': 'True'}), required = False)
+    asisreunion = forms.CharField(label='Asistencia a Reunión', widget=forms.TextInput(attrs={'class' : 'form-control', 'value' : 'SD', 'readonly' : 'True'}), required = False)
+    status = forms.CharField(label='Status', widget=forms.TextInput(attrs={'class' : 'form-control', 'readonly' : 'True'}), required = False)
 
 
 
 class ValidateMatriculaForm(forms.Form):
-    matricula = forms.CharField(label='Matrícula', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
+    matricula = forms.CharField(label='Matrícula', widget=forms.TextInput(attrs={'class' : 'form-control', 'autofocus': 'True'}), required = False)
+    
+    
+class ValidateTelefonoForm(forms.Form):
+    numcel = forms.CharField(label='Teléfono', widget=forms.TextInput(attrs={'class' : 'form-control', 'autofocus': 'True'}), required = False)

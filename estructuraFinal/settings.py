@@ -126,7 +126,8 @@ STATIC_ROOT = 'staticfiles/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    '/Users/k3nsh1n/Dev/estructuraFinal/static',
+    "C:/Users/jazyi/Dev/django/estructuraFinal/static",
+    #'/Users/k3nsh1n/Dev/estructuraFinal/static',
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

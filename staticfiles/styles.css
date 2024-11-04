@@ -1,19 +1,46 @@
-:root {
+/*:root {
     background-color: lightcyan;
+}*/
+
+#login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
 
-#menu-btns > li{
-    list-style: none;
+
+#menu-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 10px;
 }
+
 
 #btn-listado {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 #btn-register {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#btnsout {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#error {
+    background-color: red;
+    color: white;
+    font-size: 15px;
 }

@@ -1,6 +1,14 @@
-:root {
+/*:root {
     background-color: lightcyan;
+}*/
+
+#login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
+
 
 #menu-btns {
     display: flex;
@@ -35,4 +43,8 @@
     background-color: red;
     color: white;
     font-size: 15px;
+}
+
+#validaM {
+    text-align: center;
 }

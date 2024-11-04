@@ -9,11 +9,7 @@
         <div class="row">  
             <div class="col">
                 <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
-                    <!-- <div id="login-form">
-                    {{ field.username }}
-                    {{ field.password }}
-                    </div> -->
-                    {{form}}
+                    {{ form }}
 
                     <div id="btn-register">
                         <input type="submit" value="Registrar" class="btn btn-primary">
