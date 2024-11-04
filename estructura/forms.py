@@ -750,7 +750,7 @@ class EstructuraRegistrationForm(forms.Form):
     respasig = forms.CharField(label='Responsable Asignado', widget=forms.TextInput(attrs={'class' : 'form-control'}), required = False)
     engrupo = forms.CharField(label='En Grupo', widget=forms.TextInput(attrs={'class' : 'form-control', 'value': 'SD', 'readonly': 'True'}), required = False)
     asisreunion = forms.CharField(label='Asistencia a Reunión', widget=forms.TextInput(attrs={'class' : 'form-control', 'value' : 'SD', 'readonly' : 'True'}), required = False)
-    status = forms.CharField(label='Status', widget=forms.TextInput(attrs={'class' : 'form-control', 'readonly' : 'True'}), required = False)
+    status = forms.CharField(label='Status', widget=forms.TextInput(attrs={'class' : 'form-control', 'readonly' : 'True', 'value' : 'S/D', 'readonly' : 'True'}), required = False)
 
 
 
