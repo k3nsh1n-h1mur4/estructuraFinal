@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 LOGIN_REDIRECT_URL = '/estructura/validate_matricula/'
+#LOGIN_URL = '/accounts/login'
 LOGIN_URL = '/accounts/login'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 

@@ -184,7 +184,7 @@ def list(request):
     if request.method == 'GET':
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT * FROM estructuratbl WHERE user_id = {0}".format(request.user.id) )
+        cur.execute("SELECT * FROM estructuratbl WHERE user_id_id = {0}".format(request.user.id) )
         ctx = cur.fetchall()
         cnx.commit()
         total = len(ctx)
@@ -247,7 +247,7 @@ def export_excel(request):
     if request.method == 'GET':
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT * FROM estructuratbl WHERE user_id = {0}".format(request.user.id))
+        cur.execute("SELECT * FROM estructuratbl WHERE user_id_id = {0}".format(request.user.id))
         ctx = cur.fetchall()
         cnx.commit()
         cur.close()

@@ -2,11 +2,23 @@
 
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
             <div class="col">
+                <h3 id="login">LogIn</h3>
                 <form action="" method="POST">{% csrf_token %}
-                    {{ form }}
+                    {% for field in form %}
+                    <div class="fieldWrapper">
+                        {{ field.label_tag }}
+                        <div>
+                            {{ field.name.username }}
+                        </div>
+                        <div>
+                            {{ field.name.password }}
+                            {{ field }}
+                        </div>
+                    </div>
+                    {% endfor %}
                     <div>
                         <input type="submit" value="Entrar" class="btn btn-primary">
                     </div>    
