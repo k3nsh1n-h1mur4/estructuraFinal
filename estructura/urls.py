@@ -14,4 +14,6 @@ urlpatterns = [
     path('export_excel/', views.export_excel, name='export_excel'),
     path('validate_matricula/', views.ValidateMatricula, name='validate_matricula'),
     path('validate_telefono/', views.ValidateTelefono, name='validate_telefono'),
+    path('editar/<int:id>/', views.edit, name='edit'),
+    path('save_edit/<int:id>/', views.save_edit, name='save_edit'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

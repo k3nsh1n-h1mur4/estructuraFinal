@@ -20,7 +20,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, BaseUserCreationForm
 
-from .forms import UserRegistrationForm, EstructuraRegistrationForm, ValidateMatriculaForm, ValidateTelefonoForm
+from .forms import UserRegistrationForm, EstructuraRegistrationForm, ValidateMatriculaForm, ValidateTelefonoForm, EstructuraEdicionForm
 from .models import EstructuraModel
 
 def index(request):
@@ -62,7 +62,7 @@ def upload_handle_img(img, name):
 def getLastId():
     cnx = Connection.getConnection()
     cur = cnx.cursor()
-    cur.execute("SELECT id FROM estructuratbl order by id desc limit 1;")
+    cur.execute("SELECT id FROM estructurafinal order by id desc limit 1;")
     rowid = cur.fetchone()
     cnx.commit()
     print(rowid)
@@ -82,7 +82,7 @@ def ValidateMatricula(request):
         matricula = request.POST['matricula']
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT matricula FROM estructuratbl WHERE matricula={0}".format(matricula))
+        cur.execute("SELECT matricula FROM estructurafinal WHERE matricula={0}".format(matricula))
         ctx = cur.fetchone()
         cnx.commit()
         cur.close()
@@ -104,10 +104,10 @@ def ValidateTelefono(request):
     #form = ValidateMatriculaForm()
     if request.method == 'POST':
         form = ValidateTelefonoForm(request.POST)
-        numcel = request.POST['numcel']
+        num_cel = request.POST['num_cel']
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT numcel FROM estructuratbl WHERE numcel={0}".format(numcel))
+        cur.execute("SELECT num_cel FROM estructurafinal WHERE num_cel={0}".format(num_cel))
         ctx = cur.fetchone()
         cnx.commit()
         cur.close()
@@ -131,45 +131,47 @@ def new_register(request):
         form = EstructuraRegistrationForm(request.POST, request.FILES)
         matricula = request.POST['matricula']
         nombre = request.POST['nombre']
-        fotot = request.FILES['fotot']
-        fotof = request.FILES['fotof']
-        fechan = request.POST['fechan']
+        ftrab = request.FILES['ftrab']
+        ffirma = request.FILES['ffirma']
+        fnac = request.POST['fnac']
         categoria= request.POST['categoria']
-        centtrabact= request.POST['centtrabact']
-        adscant= request.POST['adscant']
+        adsc_act= request.POST['adsc_act']
+        adsc_ant= request.POST['adsc_ant']
         turno= request.POST['turno']
         domicilio= request.POST['domicilio']
         colonia= request.POST['colonia']
         municipio= request.POST['municipio']
         seccional= request.POST['seccional']
-        numcel= request.POST['numcel']
-        correo= request.POST['correo']
-        resp100= request.POST['resp100']
-        resp10= request.POST['resp10']
-        parttrab= request.POST['parttrab']
-        infadic= request.POST['infadic']
+        num_cel= request.POST['num_cel']
+        email = request.POST['email']
+        Resp_100 = request.POST['Resp_100']
+        Resp_10= request.POST['Resp_10']
+        part_trab= request.POST['part_trab']
+        inf_adic= request.POST['inf_adic']
         descansos= request.POST['descansos']
-        vacprog= request.POST['vacprog']
+        vac_prog= request.POST['vac_prog']
         servicio= request.POST['servicio']
         promocion= request.POST['promocion']
         movilizacion= request.POST['movilizacion']
-        respasig= request.POST['respasig']
+        asis_reu = request.POST['asis_reu']
+        voto_25Sept = request.POST['voto_25Sept']
         engrupo = request.POST['engrupo']
-        asisreunion = request.POST['asisreunion']
         status = request.POST['status']
-        upload_handle_img(fotot, fotot.name)
+        inf_admin = request.POST['inf_admin']
+        mi_resp = request.POST['mi_resp']
+        upload_handle_img(ftrab, ftrab.name)
         folder = os.path.join(settings.BASE_DIR, 'images')
-        imgPersonPath = os.path.join(folder, fotot.name)
+        imgPersonPath = os.path.join(folder, ftrab.name)
         
-        upload_handle_img(fotof, fotof.name)
-        imgSignPath = os.path.join(folder, fotof.name)
+        upload_handle_img(ffirma, ffirma.name)
+        imgSignPath = os.path.join(folder, ffirma.name)
         data = [
-            (getLastId(),matricula,nombre.upper(),imgPersonPath,imgSignPath,fechan,categoria,centtrabact,adscant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,numcel,correo,resp100.upper(),resp10.upper(),parttrab.upper(),infadic.upper(),descansos.upper(),vacprog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),respasig.upper(),engrupo.upper(),asisreunion.upper(),status.upper(),request.user.id),
+            (getLastId(),matricula,nombre.upper(),imgPersonPath,imgSignPath,fnac,categoria,adsc_act,adsc_ant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id),
         ]
         cnx = Connection.getConnection()
         cur = cnx.cursor()
         
-        cur.executemany("INSERT INTO estructuratbl VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", data)
+        cur.executemany("INSERT INTO estructurafinal VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", data)
         cnx.commit()
         cur.close()
         return JsonResponse({"data" : "Registro Realizado"})
@@ -184,7 +186,7 @@ def list(request):
     if request.method == 'GET':
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT * FROM estructuratbl WHERE user_id_id = {0}".format(request.user.id) )
+        cur.execute("SELECT * FROM estructurafinal WHERE user_id_id_id = {0}".format(request.user.id) )
         ctx = cur.fetchall()
         cnx.commit()
         total = len(ctx)
@@ -206,7 +208,7 @@ def details(request, id):
     error = None
     cnx = Connection.getConnection()
     cur = cnx.cursor()
-    cur.execute('SELECT * FROM estructuratbl WHERE id = {0};'.format(id))
+    cur.execute('SELECT * FROM estructurafinal WHERE id = {0};'.format(id))
     ctx = cur.fetchone()
     if not ctx:
         error = 'No hay Registros por Mostrar'
@@ -226,7 +228,7 @@ def delete(request,id):
     id = id
     cnx = Connection.getConnection()
     cur = cnx.cursor()
-    cur.execute("DELETE FROM estructuratbl WHERE id = {0}".format(id))
+    cur.execute("DELETE FROM estructurafinal WHERE id = {0}".format(id))
     cnx.commit()
     cur.close()
     return redirect('list')
@@ -247,7 +249,7 @@ def export_excel(request):
     if request.method == 'GET':
         cnx = Connection.getConnection()
         cur = cnx.cursor()
-        cur.execute("SELECT * FROM estructuratbl WHERE user_id_id = {0}".format(request.user.id))
+        cur.execute("SELECT * FROM estructurafinal WHERE user_id_id_id = {0}".format(request.user.id))
         ctx = cur.fetchall()
         cnx.commit()
         cur.close()
@@ -265,6 +267,78 @@ def export_excel(request):
 def viewImage(request, slug):
     slug = slug
     return HttpResponse(slug)
+
+
+@login_required
+def edit(request, id):
+    title = 'Editar Registro'
+    id = id
+    cnx = Connection.getConnection()
+    cur = cnx.cursor()
+    cur.execute("SELECT * FROM estructurafinal WHERE id=?;", [id,])
+    ctx = cur.fetchone()
+    cnx.commit() 
+    form = EstructuraEdicionForm()
+    if request.method == 'POST':
+        form = EstructuraEdicionForm(request.POST, initial=ctx)
+        print(form)
+    return render(request, 'editar.html', {'title':title, 'ctx':ctx, 'form':form})
+
+
+@login_required
+def save_edit(request, id):
+    id = id
+    title = 'Guardar Edicion'
+    if request.method == 'POST':
+        matricula = request.POST['matricula']
+        nombre = request.POST['nombre']
+        ftrab = request.FILES['ftrab']
+        ffirma = request.FILES['ffirma']
+        fnac = request.POST['fnac']
+        categoria= request.POST['categoria']
+        adsc_act= request.POST['adsc_act']
+        adsc_ant= request.POST['adsc_ant']
+        turno= request.POST['turno']
+        domicilio= request.POST['domicilio']
+        colonia= request.POST['colonia']
+        municipio= request.POST['municipio']
+        seccional= request.POST['seccional']
+        num_cel= request.POST['num_cel']
+        email = request.POST['email']
+        Resp_100 = request.POST['Resp_100']
+        Resp_10= request.POST['Resp_10']
+        part_trab= request.POST['part_trab']
+        inf_adic= request.POST['inf_adic']
+        descansos= request.POST['descansos']
+        vac_prog= request.POST['vac_prog']
+        servicio= request.POST['servicio']
+        promocion= request.POST['promocion']
+        movilizacion= request.POST['movilizacion']
+        asis_reu = request.POST['asis_reu']
+        voto_25Sept = request.POST['voto_25Sept']
+        engrupo = request.POST['engrupo']
+        status = request.POST['status']
+        inf_admin = request.POST['inf_admin']
+        mi_resp = request.POST['mi_resp'] 
+        upload_handle_img(ftrab, ftrab.name)
+        folder = os.path.join(settings.BASE_DIR, 'images')
+        imgPersonPath = os.path.join(folder, ftrab.name)
+        
+        upload_handle_img(ffirma, ffirma.name)
+        imgSignPath = os.path.join(folder, ffirma.name)
+        data = [
+            (getLastId(),matricula,nombre.upper(),imgPersonPath,imgSignPath,fnac,categoria,adsc_act,adsc_ant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id),
+        ]
+        cnx = Connection.getConnection()
+        cur = cnx.cursor()
+        
+        cur.executemany("INSERT INTO estructurafinal VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", data)
+        cnx.commit()
+        cur.close()
+        return JsonResponse({"data" : "Registro Realizado"})
+        
+    return HttpResponse('Registro Editado Correctamente')    
+    #return render(request, 'new_register.html', {'title': title})          
     
 
 """

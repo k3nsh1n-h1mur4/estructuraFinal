@@ -52,3 +52,9 @@
 #login {
     text-align: center;
 }
+
+#btns-validate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
