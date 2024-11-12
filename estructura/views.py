@@ -292,8 +292,8 @@ def save_edit(request, id):
     if request.method == 'POST':
         matricula = request.POST['matricula']
         nombre = request.POST['nombre']
-        ftrab = request.FILES['ftrab']
-        ffirma = request.FILES['ffirma']
+        ftrab = request.POST['ftrab']
+        ffirma = request.POST['ffirma']
         fnac = request.POST['fnac']
         categoria= request.POST['categoria']
         adsc_act= request.POST['adsc_act']
@@ -320,22 +320,26 @@ def save_edit(request, id):
         status = request.POST['status']
         inf_admin = request.POST['inf_admin']
         mi_resp = request.POST['mi_resp'] 
-        upload_handle_img(ftrab, ftrab.name)
-        folder = os.path.join(settings.BASE_DIR, 'images')
-        imgPersonPath = os.path.join(folder, ftrab.name)
+        #upload_handle_img(ftrab, ftrab.name)
+        #folder = os.path.join(settings.BASE_DIR, 'images')
+        #imgPersonPath = os.path.join(folder, ftrab.name)
         
-        upload_handle_img(ffirma, ffirma.name)
-        imgSignPath = os.path.join(folder, ffirma.name)
+        #upload_handle_img(ffirma, ffirma.name)
+        #imgSignPath = os.path.join(folder, ffirma.name)
+        """
+        
         data = [
-            (id,matricula,nombre.upper(),imgPersonPath,imgSignPath,fnac,categoria,adsc_act,adsc_ant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id),
+            (matricula,nombre.upper(),imgPersonPath,imgSignPath,fnac,categoria,adsc_act,adsc_ant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id),
         ]
+        """
         cnx = Connection.getConnection()
         cur = cnx.cursor()
         
-        cur.executemany("UPDATE estructurafinal SET id=?,matricula=?,nombre=?,ftrab=?,ffirma=?,fnac=?,categoria=?,adsc_act=?,adsc_ant=?,turno=?,domicilio=?,colonia=?,municipio=?,seccional=?,num_cel=?,email=?,Resp_100=?,Resp_10=?,part_trab=?,inf_adic=?,descansos=?,vac_prog=?,servicio=?,promocion=?,movilizacion=?,asis_reu=?,voto_25Sept=?,engrupo=?,status=?,inf_admin=?,mi_resp=?,user_id_id_id=?;", data)
+        cur.execute("UPDATE estructurafinal SET matricula=?,nombre=?,ftrab=?,ffirma=?,fnac=?,categoria=?,adsc_act=?,adsc_ant=?,turno=?,domicilio=?,colonia=?,municipio=?,seccional=?,num_cel=?,email=?,Resp_100=?,Resp_10=?,part_trab=?,inf_adic=?,descansos=?,vac_prog=?,servicio=?,promocion=?,movilizacion=?,asis_reu=?,voto_25Sept=?,engrupo=?,status=?,inf_admin=?,mi_resp=?,user_id_id_id=? WHERE id=?;", (matricula,nombre.upper(),ftrab,ffirma,fnac,categoria,adsc_act,adsc_ant.upper(),turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id, id))
         cnx.commit()
         cur.close()
-        return JsonResponse({"data" : "Registro Realizado"})
+        return redirect('list')
+        #return JsonResponse({"data" : "Registro Realizado"})
         
     return HttpResponse('Registro Editado Correctamente')    
     #return render(request, 'new_register.html', {'title': title})          

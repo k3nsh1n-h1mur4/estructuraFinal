@@ -20,12 +20,12 @@
                         <input type="text" name="nombre" value="{{ctx.2}}" placeholder="{{ctx.2}}" class="form-control" > 
                      </div> 
                      <div class="form-group">
-                        <label for="ftrab">Foto Trabajador:</label>
-                        <input type="file" name="ftrab" value="{{ctx.3}}" placeholder="{{ctx.3}}" class="form-control" > 
+                        <label for="ftrab"></label>
+                        <input type="hidden" name="ftrab" value="{{ctx.3}}" placeholder="{{ctx.3}}" class="form-control" readonly > 
                      </div>
                      <div class="form-group">
-                        <label for="ffirma">Foto Firma</label>
-                        <input type="file" name="ffirma" value="{{ctx.4}}" placeholder="{{ctx.4}}" class="form-control" > 
+                        <label for="ffirma"></label>
+                        <input type="hidden" name="ffirma" value="{{ctx.4}}" placeholder="{{ctx.4}}" class="form-control" readonly > 
                      </div>
                      <div class="form-group">
                         <label for="fnac">Fecha de Nacimiento</label>
@@ -100,7 +100,7 @@
                         <input type="text" name="servicio" value="{{ctx.22}}" placeholder="{{ctx.22}}" class="form-control" > 
                      </div>
                      <div class="form-group">
-                        <label for="promocion"></label>
+                        <label for="promocion">Promoción</label>
                         <input type="text" name="promocion" value="{{ctx.23}}" placeholder="{{ctx.23}}" class="form-control" > 
                      </div>
                      <div class="form-group">
@@ -109,7 +109,7 @@
                      </div>
                      <div class="form-group">
                         <label for="asis_reu">Asistencia a Reunion</label>
-                        <input type="text" name="asis_reu" value="{{ctx.25}}" placeholder="{{ctx.25}}" class="form-control" > 
+                        <input type="text" name="asis_reu" value="{{ctx.25}}" placeholder="{{ctx.25}}" readonly class="form-control" > 
                      </div>
                      <div class="form-group">
                         <label for="voto_25Sept">Voto 25 Septiembre</label>
@@ -128,17 +128,13 @@
                         <input type="text" name="inf_admin" value="{{ctx.29}}" placeholder="{{ctx.29}}" readonly class="form-control" > 
                      </div>
                      <div class="form-group">
-                        <label for="mi_resp">Mi Responsable</label>
-                        <input type="text" name="mi_resp" value="{{ctx.30}}" placeholder="{{ctx.30}}" readonly class="form-control" > 
+                        <label for="mi_resp"></label>
+                        <input type="hidden" name="mi_resp" value="{{ctx.30}}" placeholder="Admin" readonly class="form-control" > 
                      </div>
                      <div class="form-group">
-                        <label for="">Registro</label>
-                        <input type="text" name="user_id_id" value="{{ctx.31}}" placeholder="{{ctx.31}}" readonly class="form-control" > 
+                        <label for=""></label>
+                        <input type="hidden" name="user_id_id" value="{{ctx.31}}" readonly class="form-control" > 
                      </div>
-
-
-
-
 
                      <div>
                         <input type="submit" value="Guardar" class="btn btn-primary">
