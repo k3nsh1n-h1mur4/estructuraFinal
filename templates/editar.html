@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <form action="{% url 'save_edit' ctx.0 %}" method="POST">
+                <form action="{% url 'save_edit' ctx.0 %}" method="POST" enctype="multipart/form-data">
                      {% csrf_token %}
                      <div class="form-group">
 
@@ -21,11 +21,11 @@
                      </div> 
                      <div class="form-group">
                         <label for="ftrab">Foto Trabajador:</label>
-                        <input type="file" name="ftrab" value="" placeholder="{{ctx.3}}" class="form-control" > 
+                        <input type="file" name="ftrab" value="{{ctx.3}}" placeholder="{{ctx.3}}" class="form-control" > 
                      </div>
                      <div class="form-group">
                         <label for="ffirma">Foto Firma</label>
-                        <input type="file" name="ffirma" value="" placeholder="{{ctx.4}}" class="form-control" > 
+                        <input type="file" name="ffirma" value="{{ctx.4}}" placeholder="{{ctx.4}}" class="form-control" > 
                      </div>
                      <div class="form-group">
                         <label for="fnac">Fecha de Nacimiento</label>

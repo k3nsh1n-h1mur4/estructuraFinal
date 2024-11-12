@@ -327,12 +327,12 @@ def save_edit(request, id):
         upload_handle_img(ffirma, ffirma.name)
         imgSignPath = os.path.join(folder, ffirma.name)
         data = [
-            (getLastId(),matricula,nombre.upper(),imgPersonPath,imgSignPath,fnac,categoria,adsc_act,adsc_ant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id),
+            (id,matricula,nombre.upper(),imgPersonPath,imgSignPath,fnac,categoria,adsc_act,adsc_ant,turno,domicilio.upper(),colonia.upper(),municipio.upper(),seccional,num_cel,email,Resp_100.upper(),Resp_10.upper(),part_trab.upper(),inf_adic.upper(),descansos.upper(),vac_prog.upper(),servicio.upper(),promocion.upper(),movilizacion.upper(),asis_reu.upper(),voto_25Sept.upper(),engrupo.upper(),status.upper(),inf_admin.upper(),mi_resp.upper(),request.user.id),
         ]
         cnx = Connection.getConnection()
         cur = cnx.cursor()
         
-        cur.executemany("INSERT INTO estructurafinal VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);", data)
+        cur.executemany("UPDATE estructurafinal SET id=?,matricula=?,nombre=?,ftrab=?,ffirma=?,fnac=?,categoria=?,adsc_act=?,adsc_ant=?,turno=?,domicilio=?,colonia=?,municipio=?,seccional=?,num_cel=?,email=?,Resp_100=?,Resp_10=?,part_trab=?,inf_adic=?,descansos=?,vac_prog=?,servicio=?,promocion=?,movilizacion=?,asis_reu=?,voto_25Sept=?,engrupo=?,status=?,inf_admin=?,mi_resp=?,user_id_id_id=?;", data)
         cnx.commit()
         cur.close()
         return JsonResponse({"data" : "Registro Realizado"})
